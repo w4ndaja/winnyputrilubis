@@ -1,12 +1,20 @@
 import React from 'react';
-import './App.css';
+import { Route, Switch } from 'wouter';
+import { AppLayout } from './layouts';
+import { Home, Login, Register, Shop } from './pages';
 
-function App() {
-  return (
-    <>
-        <h1>Welcome to my paradise!</h1>
-    </>
-  );
+export default function App() {
+    return (
+        <Switch>
+            <Route base="/">
+                <AppLayout>
+                    <Route path="" exact component={Home} />
+                    <Route path="/login" exact component={Login} />
+                    <Route path="/register" exact component={Register} />
+                    <Route path="/shop" exact component={Shop} />
+                </AppLayout>
+            </Route>
+            <Route>Not Found</Route>
+        </Switch>
+    );
 }
-
-export default App;
