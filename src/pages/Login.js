@@ -25,7 +25,7 @@ export const Login = () => {
                     <div className="row">
                         <div className="col-lg-6 offset-lg-3">
                             <div className="login-form">
-                                <h2>Masuk *</h2>
+                                <h2>Masuk **</h2>
                                 <form onSubmit={login}>
                                     <GroupInput label="Email *" type="email" name="email" value={ form.email } onChange={ bindForm } error={errors.email} />
                                     <GroupInput label="Password *" name="password" type="password" value={ form.password } onChange={ bindForm } error={errors.password} />
