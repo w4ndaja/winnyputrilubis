@@ -4,9 +4,9 @@ import { Footer, Header, PartnerLogo, Preloader } from '../components';
 export const AppLayout = ({ children }) => {
     return (
         <>
-            <Preloader />
+            {/* <Preloader /> */}
             <Header />
-            {children}
+            { children }
             <PartnerLogo />
             <Footer />
         </>

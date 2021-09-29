@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
-import { Link } from 'wouter';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { Breadcrumb, Checkbox, GroupInput, NavLink } from '../components';
 import { useForm } from '../hooks';
+import { authState } from '../store';
 
 export const Register = () => {
     const { form, post, bindForm, errors, reset, resetError } = useForm({ name : '', email: '', password: '', password_confirmation : '' });
+    const setAuth = useSetRecoilState(authState)
     const register = async e => {
         e.preventDefault();
-        post('register');
+        post('register', {onSuccess : data => {
+            setAuth(data)
+        }});
     };
+    useEffect(() => {
+        window.addEventListener('responded', e => {
+            console.log(e)
+        })
+    }, [])
     return (
         <>
             {/* Breadcrumb Section Begin */ }
             <Breadcrumb>
-                <NavLink href="/"><i className="fa fa-home" /> Beranda</NavLink>
+                <NavLink to="/"><i className="fa fa-home" /> Beranda</NavLink>
                 <span>Daftar</span>
             </Breadcrumb>
             {/* Breadcrumb Form Section Begin */ }
@@ -32,7 +42,7 @@ export const Register = () => {
                                     <button type="submit" className="site-btn login-btn">Daftar</button>
                                 </form>
                                 <div className="switch-login">
-                                    <Link to="/register" className="or-login">Atau masuk</Link>
+                                    <Link to="/login" className="or-login">Atau masuk</Link>
                                 </div>
                             </div>
                         </div>

@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import { RecoilRoot } from 'recoil';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { Preloader } from './components';
+require('./lib/api');
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <RecoilRoot>
+            <Suspense fallback={ <Preloader /> }>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Suspense>
+        </RecoilRoot>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

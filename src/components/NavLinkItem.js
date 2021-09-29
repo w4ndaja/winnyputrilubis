@@ -1,14 +1,17 @@
 import React from 'react';
-import { Link, useRoute } from 'wouter';
+import { Link, Route } from 'react-router-dom';
 
 export const NavLinkItem = ({ label = null, children = null, className = '', ...props }) => {
-    const [isActive] = useRoute(props.href);
     return (
-        <li className={className + (isActive ? " active" : "")}>
-            <Link {...props}>
-                {label || children}
-            </Link>
-            {children}
-        </li>
+        <Route path={props.to}>
+            { ({ match }) => <>
+                <li className={ className + (match && match.isExact ? " active" : "") }>
+                    <Link { ...props }>
+                        { label || children }
+                    </Link>
+                    { children }
+                </li>
+            </> }
+        </Route>
     );
 };

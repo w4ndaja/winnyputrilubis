@@ -1,3 +1,5 @@
 export * from './config'
-export * from './api'
+export * from './idrFormatter'
 export * from './img'
+export * from './printDiv'
+export * from './textAreaToHtml'

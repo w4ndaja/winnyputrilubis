@@ -26,19 +26,11 @@ export const Header = () => {
                             </div>}
                         </div>}
                         <div className="ht-right">
-                            <NavLink href="/register" className="login-panel border-0">Register</NavLink>
-                            <NavLink href="/login" className="login-panel border-0"><i className="fa fa-user" />Login</NavLink>
-                            <div className="lan-selector border-0">
-                                <select className="language_drop" name="countries" id="countries" style={{ width: 300 }}>
-                                    <option value="yt" data-image="img/flag-1.jpg" data-imagecss="flag yt" data-title="English">English</option>
-                                    <option value="yu" data-image="img/flag-2.jpg" data-imagecss="flag yu" data-title="Bangladesh">German </option>
-                                </select>
-                            </div>
+                            <NavLink to="/register" className="login-panel border-0">Daftar</NavLink>
+                            <NavLink to="/login" className="login-panel border-0"><i className="fa fa-user" />Masuk</NavLink>
                             <div className="top-social border-0">
-                                <a href="#"><i className="ti-facebook" /></a>
-                                <a href="#"><i className="ti-twitter-alt" /></a>
-                                <a href="#"><i className="ti-linkedin" /></a>
-                                <a href="#"><i className="ti-pinterest" /></a>
+                                <a href="https://www.facebook.com"><i className="ti-facebook" /></a>
+                                <a href="https://www.instagram.com"><i className="ti-instagram" /></a>
                             </div>
                         </div>
                     </div>
@@ -142,13 +134,13 @@ export const Header = () => {
                         </div>
                         <nav className="nav-menu mobile-menu">
                             <ul>
-                                <NavLinkItem href="/" label="Home"></NavLinkItem>
-                                <NavLinkItem href="/shop" label="Shop"></NavLinkItem>
+                                <NavLinkItem to="/" label="Home"></NavLinkItem>
+                                <NavLinkItem to="/shop" label="Shop"></NavLinkItem>
                                 <li><a href="#">Collection</a>
                                     <ul className="dropdown">
-                                        <NavLinkItem href="" label="Men's" />
-                                        <NavLinkItem href="" label="Women's" />
-                                        <NavLinkItem href="" label="Kid's" />
+                                        <NavLinkItem to="" label="Men's" />
+                                        <NavLinkItem to="" label="Women's" />
+                                        <NavLinkItem to="" label="Kid's" />
                                     </ul>
                                 </li>
                                 <li><a href="./blog.html">Blog</a></li>
