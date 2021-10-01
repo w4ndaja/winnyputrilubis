@@ -17,9 +17,7 @@ export const userState = selector({
     get: async ({ get }) => {
         const refreshCount = get(refreshUserState);
         const auth = get(authState);
-        if (auth) return auth.user;
         try {
-            localStorage.setItem('auth', JSON.stringify(auth));
             let { data } = await axios.get('me');
             return data;
         } catch (e) {

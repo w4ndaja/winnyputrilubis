@@ -1,33 +1,44 @@
 import React, { useEffect } from 'react';
 import { NavLink, NavLinkItem } from '.';
-import { useInfo } from '../hooks';
-import { config } from '../lib';
-
+import { useAuth, useInfo } from '../hooks';
+import { config, formatter } from '../lib';
+import { categoryLinkState, categoryState } from '../store/categoryState';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { cartState, productParamState, userState } from '../store';
+import { useHistory } from 'react-router';
 export const Header = () => {
     const {
         title,
         email,
         phone,
     } = useInfo();
+    const categories = useRecoilValue(categoryState);
+    const setLink = useSetRecoilState(categoryLinkState);
+    const [productParams, setProductParams] = useRecoilState(productParamState);
+    const carts = useRecoilValue(cartState);
+    const { push } = useHistory();
+    const { logout, user } = useAuth();
     return (
         <>
-            {/* Header Section Begin */}
+            {/* Header Section Begin */ }
             <header className="header-section">
                 <div className="header-top">
                     <div className="container">
-                        {(email || phone) && <div className="ht-left">
-                            {email && <div className="mail-service">
+                        { (email || phone) && <div className="ht-left">
+                            { email && <div className="mail-service">
                                 <i className=" fa fa-envelope" />
-                                {email}
-                            </div>}
-                            {phone && <div className="phone-service">
+                                { email }
+                            </div> }
+                            { phone && <div className="phone-service">
                                 <i className=" fa fa-phone" />
-                                {phone}
-                            </div>}
-                        </div>}
+                                { phone }
+                            </div> }
+                        </div> }
                         <div className="ht-right">
-                            <NavLink to="/register" className="login-panel border-0">Daftar</NavLink>
-                            <NavLink to="/login" className="login-panel border-0"><i className="fa fa-user" />Masuk</NavLink>
+                            { !user?.id ? <>
+                                <NavLink to="/register" className="login-panel border-0">Daftar</NavLink>
+                                <NavLink to="/login" className="login-panel border-0"><i className="fa fa-user" />Masuk</NavLink>
+                            </> : <a href="" className="login-panel border-0" onClick={ logout }>Keluar</a> }
                             <div className="top-social border-0">
                                 <a href="https://www.facebook.com"><i className="ti-facebook" /></a>
                                 <a href="https://www.instagram.com"><i className="ti-instagram" /></a>
@@ -47,54 +58,43 @@ export const Header = () => {
                             </div>
                             <div className="col-lg-7 col-md-7">
                                 <div className="advanced-search">
-                                    <button type="button" className="category-btn">All Categories</button>
-                                    <div className="input-group">
-                                        <input type="text" placeholder="What do you need?" />
-                                        <button type="button"><i className="ti-search" /></button>
+                                    <div className="input-group" style={ { maxWidth: '100%' } }>
+                                        <input type="text" placeholder="Mau cari apa?" value={ productParams.q } onChange={ e => setProductParams(params => ({ ...params, q: e.target.value })) } />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-3 text-right col-md-3">
                                 <ul className="nav-right">
-                                    <li className="heart-icon">
+                                    {/* <li className="heart-icon">
                                         <a href="#">
                                             <i className="icon_heart_alt" />
                                             <span>1</span>
                                         </a>
-                                    </li>
+                                    </li> */}
                                     <li className="cart-icon">
-                                        <a href="#">
+                                        <a href="#" onClick={ e => {
+                                            e.preventDefault();
+                                            return user?.id ? null : push('/login');
+                                        } }>
                                             <i className="icon_bag_alt" />
-                                            <span>3</span>
+                                            { !!carts.length && <span> { carts.length }</span> }
                                         </a>
-                                        <div className="cart-hover">
+                                        { !!carts.length && <div className="cart-hover">
                                             <div className="select-items">
                                                 <table>
                                                     <tbody>
-                                                        <tr>
+                                                        { carts?.map(cart => <tr key={ cart.id }>
                                                             <td className="si-pic"><img src="img/select-product-1.jpg" /></td>
                                                             <td className="si-text">
                                                                 <div className="product-selected">
-                                                                    <p>$60.00 x 1</p>
-                                                                    <h6>Kabino Bedside Table</h6>
+                                                                    <p>{ formatter.format(cart.price) } x { cart.quantity }</p>
+                                                                    <h6>{ cart.product.name }</h6>
                                                                 </div>
                                                             </td>
                                                             <td className="si-close">
                                                                 <i className="ti-close" />
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="si-pic"><img src="img/select-product-2.jpg" /></td>
-                                                            <td className="si-text">
-                                                                <div className="product-selected">
-                                                                    <p>$60.00 x 1</p>
-                                                                    <h6>Kabino Bedside Table</h6>
-                                                                </div>
-                                                            </td>
-                                                            <td className="si-close">
-                                                                <i className="ti-close" />
-                                                            </td>
-                                                        </tr>
+                                                        </tr>) }
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -107,8 +107,9 @@ export const Header = () => {
                                                 <a href="#" className="primary-btn checkout-btn">CHECK OUT</a>
                                             </div>
                                         </div>
+                                        }
                                     </li>
-                                    <li className="cart-price">$150.00</li>
+                                    { !!carts.length && <li className="cart-price">{ formatter.format(carts.sum_total) }</li> }
                                 </ul>
                             </div>
                         </div>
@@ -134,16 +135,15 @@ export const Header = () => {
                         </div>
                         <nav className="nav-menu mobile-menu">
                             <ul>
-                                <NavLinkItem to="/" label="Home"></NavLinkItem>
-                                <NavLinkItem to="/shop" label="Shop"></NavLinkItem>
-                                <li><a href="#">Collection</a>
+                                <NavLinkItem to="/" label="Beranda"></NavLinkItem>
+                                <NavLinkItem to="/shop" label="Belanja"></NavLinkItem>
+                                <li>
+                                    <a href="#">Kategori</a>
                                     <ul className="dropdown">
-                                        <NavLinkItem to="" label="Men's" />
-                                        <NavLinkItem to="" label="Women's" />
-                                        <NavLinkItem to="" label="Kid's" />
+                                        { categories.data?.map(category => <NavLinkItem to={ `/shop/${category.slug}` } label={ category.name } />) }
                                     </ul>
                                 </li>
-                                <li><a href="./blog.html">Blog</a></li>
+                                {/* <li><a href="./blog.html">Blog</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
                                 <li><a href="#">Pages</a>
                                     <ul className="dropdown">
@@ -154,14 +154,14 @@ export const Header = () => {
                                         <li><a href="./register.html">Register</a></li>
                                         <li><a href="./login.html">Login</a></li>
                                     </ul>
-                                </li>
+                                </li> */}
                             </ul>
                         </nav>
                         <div id="mobile-menu-wrap" />
                     </div>
                 </div>
             </header>
-            {/* Header End */}
+            {/* Header End */ }
         </>
     );
 };

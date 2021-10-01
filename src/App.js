@@ -12,6 +12,7 @@ export default function App() {
                     <Route path="/login" exact component={ Login } />
                     <Route path="/register" exact component={ Register } />
                     <Route path="/shop" exact component={ Shop } />
+                    <Route path="/shop/:category" exact component={ Shop } />
                 </AppLayout>
             </Route>
             <Route>Not Found</Route>
