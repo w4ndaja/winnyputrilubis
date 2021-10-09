@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AppLayout } from './layouts';
 import { Home, Login, Register, Shop } from './pages';
+import { publicSocket } from './lib/socket';
 
 export default function App() {
     return (

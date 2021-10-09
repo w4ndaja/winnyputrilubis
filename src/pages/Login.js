@@ -9,7 +9,9 @@ export const Login = () => {
     const login = async e => {
         e.preventDefault();
         post('/login', {
-            onSuccess: _useAuth.login
+            onSuccess: (data) => {
+                _useAuth.login(data);
+            }
         });
     };
     return (
